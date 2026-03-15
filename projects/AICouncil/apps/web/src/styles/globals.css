@@ -1,0 +1,184 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================
+   Venice Brand Styles
+   ============================================ */
+
+* {
+  @apply border-dark-300;
+}
+
+html {
+  @apply scroll-smooth;
+}
+
+body {
+  @apply bg-dark-900 text-dark-100 font-sans;
+  color-scheme: dark;
+}
+
+/* ============================================
+   Typography
+   ============================================ */
+
+h1 {
+  @apply text-4xl font-bold text-venice-400;
+}
+
+h2 {
+  @apply text-3xl font-bold text-venice-300;
+}
+
+h3 {
+  @apply text-2xl font-semibold text-venice-200;
+}
+
+h4 {
+  @apply text-xl font-semibold text-venice-100;
+}
+
+p {
+  @apply text-dark-300 leading-relaxed;
+}
+
+a {
+  @apply text-secondary-400 hover:text-secondary-300 transition-colors;
+}
+
+/* ============================================
+   Components
+   ============================================ */
+
+/* Buttons */
+.btn {
+  @apply px-4 py-2 rounded-lg font-medium transition-all duration-200;
+}
+
+.btn-primary {
+  @apply btn bg-venice-700 text-white hover:bg-venice-600 shadow-lg hover:shadow-glow;
+}
+
+.btn-secondary {
+  @apply btn bg-secondary-600 text-white hover:bg-secondary-500;
+}
+
+.btn-tertiary {
+  @apply btn bg-dark-700 text-dark-100 hover:bg-dark-600 border border-dark-600;
+}
+
+.btn-sm {
+  @apply px-3 py-1 text-sm;
+}
+
+.btn-lg {
+  @apply px-6 py-3 text-lg;
+}
+
+/* Cards */
+.card {
+  @apply bg-dark-800 border border-dark-700 rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow;
+}
+
+.card-hover {
+  @apply hover:border-venice-600 hover:shadow-glow;
+}
+
+/* Input Fields */
+.input {
+  @apply w-full px-4 py-2 bg-dark-800 border border-dark-700 rounded-lg text-dark-100 placeholder-dark-500 focus:outline-none focus:border-venice-600 focus:ring-2 focus:ring-venice-600/20 transition-all;
+}
+
+.input-error {
+  @apply border-red-600 focus:border-red-600 focus:ring-red-600/20;
+}
+
+/* ============================================
+   Layout
+   ============================================ */
+
+.container {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+.glass {
+  @apply bg-dark-900/80 backdrop-blur-md border border-dark-700;
+}
+
+/* ============================================
+   Animations
+   ============================================ */
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite;
+  background: linear-gradient(
+    to right,
+    #1f2937,
+    #374151,
+    #1f2937
+  );
+  background-size: 1000px 100%;
+}
+
+/* ============================================
+   Scrollbar Styling
+   ============================================ */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1f2937;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #7e22ce;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #9333ea;
+}
+
+/* ============================================
+   Utility Classes
+   ============================================ */
+
+.text-gradient {
+  @apply bg-gradient-to-r from-venice-400 to-secondary-400 bg-clip-text text-transparent;
+}
+
+.shadow-glow-primary {
+  box-shadow: 0 0 20px rgba(168, 85, 247, 0.3);
+}
+
+.shadow-glow-secondary {
+  box-shadow: 0 0 20px rgba(236, 72, 153, 0.3);
+}
+
+/* ============================================
+   Dark Mode Overrides
+   ============================================ */
+
+@media (prefers-color-scheme: dark) {
+  ::-webkit-calendar-picker-indicator {
+    filter: invert(1) brightness(0.8);
+  }
+
+  input[type="date"]::-webkit-calendar-picker-indicator,
+  input[type="time"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+  }
+}

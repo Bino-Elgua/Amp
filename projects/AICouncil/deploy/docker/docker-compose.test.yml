@@ -1,0 +1,95 @@
+version: '3.8'
+
+services:
+  # LiteLLM Proxy
+  litellm:
+    build:
+      context: ../../services/litellm
+      dockerfile: Dockerfile
+    ports:
+      - "4000:4000"
+    environment:
+      LITELLM_LOG_LEVEL: debug
+      LITELLM_PORT: 4000
+      VENICE_API_KEY: ${VENICE_API_KEY:-test-key}
+      OLLAMA_ENDPOINT: http://ollama:11434
+      LITELLM_MASTER_KEY: ${LITELLM_MASTER_KEY:-test-master-key}
+    depends_on:
+      - ollama
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4000/models"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - aicouncil
+
+  # Ollama (Local LLM)
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    environment:
+      OLLAMA_HOST: 0.0.0.0:11434
+    volumes:
+      - ollama_data:/root/.ollama
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - aicouncil
+
+  # Council Service
+  council:
+    build:
+      context: ../../services/council
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      COUNCIL_DEBUG: "true"
+      COUNCIL_PORT: 8000
+      COUNCIL_DELIBERATION_TIMEOUT: 30
+      COUNCIL_MIN_CONSENSUS: 0.5
+      LITELLM_BASE_URL: http://litellm:4000/v1
+      LITELLM_API_KEY: ${LITELLM_MASTER_KEY:-test-master-key}
+      FALLBACK_MODEL: ollama/llama2
+      VENICE_API_KEY: ${VENICE_API_KEY:-test-key}
+    depends_on:
+      litellm:
+        condition: service_healthy
+      ollama:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - aicouncil
+
+  # Blockchain Neural Brain (Test Runner)
+  neural-brain-test:
+    build:
+      context: ../../services/neural-brain
+      dockerfile: Dockerfile.test
+    environment:
+      BLOCKCHAIN_CHAIN: sui
+      SUI_RPC_URL: https://fullnode.testnet.sui.io:443
+      CONSENSUS_THRESHOLD: "0.5"
+      ARWEAVE_WALLET_PATH: ${ARWEAVE_WALLET_PATH:-}
+    depends_on:
+      council:
+        condition: service_healthy
+    networks:
+      - aicouncil
+    command: pytest test_blockchain_integration.py -v --tb=short
+
+networks:
+  aicouncil:
+    driver: bridge
+
+volumes:
+  ollama_data:

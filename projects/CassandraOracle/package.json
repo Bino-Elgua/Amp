@@ -1,0 +1,37 @@
+{
+  "name": "cassandra-oracle",
+  "version": "1.0.0",
+  "description": "Autonomous Architect Oracle - Predicts, Pre-architects, Executes Future Paradigms",
+  "type": "module",
+  "main": "core/cassandra.ts",
+  "scripts": {
+    "dev": "node --import tsx core/cassandra.ts",
+    "build": "tsc",
+    "oracle:predict": "node --import tsx core/prediction-engine.ts",
+    "oracle:refactor": "node --import tsx core/code-generator.ts",
+    "oracle:deploy": "node --import tsx core/autonomous-executor.ts",
+    "oracle:monitor": "node --import tsx monitoring/oracle-monitor.ts",
+    "blockchain:init": "node --import tsx blockchain/contract-deployer.ts",
+    "blockchain:commit": "node --import tsx blockchain/prediction-logger.ts",
+    "vectordb:sync": "node --import tsx core/vectordb-sync.ts",
+    "semantic:index": "node --import tsx core/semantic-indexer.ts",
+    "agent:supervisor": "node --import tsx agents/supervisor-agent.ts",
+    "health:check": "node --import tsx cli/health-check.ts",
+    "test": "node --import tsx tests/run-tests.ts",
+    "start": "node --import tsx core/cassandra.ts --mode production"
+  },
+  "dependencies": {
+    "@qdrant/js-client-rest": "^1.8.0",
+    "axios": "^1.6.0",
+    "ethers": "^6.10.0",
+    "express": "^4.18.0",
+    "redis": "^4.6.0",
+    "dotenv": "^16.3.0",
+    "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@types/express": "^4.17.21",
+    "tsx": "^4.7.0"
+  }
+}

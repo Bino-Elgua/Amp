@@ -1,0 +1,10 @@
+[package]
+name = "neural_brain"
+version = "0.1.0"
+description = "Blockchain neural consensus engine for AICouncil"
+
+[dependencies]
+Sui = { git = "https://github.com/MystenLabs/sui.git", subdir = "crates/sui-framework/packages/sui-framework", rev = "framework/testnet" }
+
+[addresses]
+neural_brain = "0x0"

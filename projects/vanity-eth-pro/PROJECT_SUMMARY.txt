@@ -1,0 +1,306 @@
+╔════════════════════════════════════════════════════════════════════════════╗
+║                           🔮 ÀṣẸMIRROR                                      ║
+║             The Unified Shrine for Technosis (LIVE & READY)                ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+WHAT YOU HAVE
+─────────────────────────────────────────────────────────────────────────────
+
+✅ Multi-LLM SDK (llm-sdk.ts)
+   └─ OpenAI, Claude, Gemini, Mistral, Groq, Cohere
+   └─ Switch providers in 30 seconds
+   └─ Unified embed() + chat() interface
+
+✅ Smart Indexer (indexer.ts)
+   └─ Real-time GitHub sync (all 4 repos)
+   └─ Semantic chunking (smart code splitting)
+   └─ Yorùbá + technical tagging
+   └─ Qdrant vector upload
+
+✅ REST API (api.ts)
+   └─ /search (semantic RAG)
+   └─ /chat (multi-turn LLM)
+   └─ /timeline (7-year roadmap)
+   └─ /visualize (pyramids, wallets, tithe)
+
+✅ Dark-Mode UI (SvelteKit)
+   └─ 5 tabs: Search, 7-Layer, Timeline, 1440, Tithe
+   └─ Black + Red + Ash theme
+   └─ Phone-first responsive
+   └─ PWA (installable on phone)
+
+✅ 5 Specialized Components
+   ├─ SearchBar → Semantic search with examples
+   ├─ Pyramid → 7-layer visualization
+   ├─ Timeline → 7-year lock + 10 priorities + sabbath
+   ├─ WalletTree → 1440 derivation + 7×7 journey
+   └─ TitheFlow → 50/25/15/10 allocation breakdown
+
+✅ Complete Documentation
+   ├─ START_HERE.md (15-minute quickstart)
+   ├─ README.md (full feature overview)
+   ├─ SETUP.md (installation details)
+   ├─ MANIFEST.md (file-by-file guide)
+   └─ QUICK_START.sh (automated setup)
+
+─────────────────────────────────────────────────────────────────────────────
+
+LAUNCH IN 3 STEPS
+─────────────────────────────────────────────────────────────────────────────
+
+1. INSTALL
+   $ npm install
+
+2. CONFIGURE
+   $ cp .env.example .env
+   # Edit .env with your LLM API key (choose 1 of 6)
+
+3. RUN
+   $ npm run index     # (5-10 minutes, one-time)
+   $ npm run dev       # Then visit http://localhost:3000
+
+─────────────────────────────────────────────────────────────────────────────
+
+KEY FEATURES
+─────────────────────────────────────────────────────────────────────────────
+
+🔍 SEMANTIC SEARCH
+   → Ask: "Where does @impact live"
+   → Returns: Code snippet + file + line + relevance score
+   → Understands: English, Yorùbá, technical terms
+
+🏛️ 7-LAYER PYRAMID
+   1. Physical Genesis (handshake)
+   2. Oso-lang Compiler (Julia)
+   3. Entropy Oracle (ifascript)
+   4. Witness Mesh (BLE + LoRa)
+   5. Techgnosis VM (Go opcodes)
+   6. AIO / SimaaS (simulation)
+   7. Shrine Economy (Move contracts)
+
+💰 1440 WALLET TREE
+   Genesis Seed (BIPỌ̀N39)
+   ├─ Council of 12 Lineages
+   └─ 1440 Soul-Bound Inheritance (7-year lock, 11.11% APY)
+
+💸 TITHE FLOW (3.69% per transaction)
+   50% → Treasury (shrines + robots)
+   25% → 1440 Inheritance (fasting yield)
+   15% → Council (governance)
+   10% → Burn Void (blood sacrifice)
+
+📅 TIMELINE
+   Day 0-2555: 7-year inheritance lock
+   Phase 1-7: 90-day sprints
+   10 Priority Items: Tracked (in-progress/todo)
+   Sabbath: Every Saturday (red, no transactions)
+
+─────────────────────────────────────────────────────────────────────────────
+
+FILE STRUCTURE
+─────────────────────────────────────────────────────────────────────────────
+
+aśẹmirror/
+├── llm-sdk.ts              (350 lines) — LLM abstraction layer
+├── indexer.ts              (250 lines) — Repo sync + embeddings
+├── api.ts                  (200 lines) — REST backend
+├── src/routes/+page.svelte (150 lines) — Main UI
+├── src/components/
+│   ├── SearchBar.svelte    (60 lines)
+│   ├── Pyramid.svelte      (80 lines)
+│   ├── Timeline.svelte     (120 lines)
+│   ├── WalletTree.svelte   (110 lines)
+│   └── TitheFlow.svelte    (150 lines)
+├── package.json
+├── svelte.config.js
+├── .env.example
+└── Documentation
+    ├── START_HERE.md       ← Read this first
+    ├── README.md
+    ├── SETUP.md
+    └── MANIFEST.md
+
+─────────────────────────────────────────────────────────────────────────────
+
+LLM PROVIDERS (CHOOSE 1)
+─────────────────────────────────────────────────────────────────────────────
+
+OpenAI (GPT-4o)
+  • Cost: $2.50/$10 per 1M tokens
+  • Speed: ⚡⚡⚡
+  • Capability: Highest
+  • Get key: https://platform.openai.com/api-keys
+
+Claude (Anthropic)
+  • Cost: $3/$15 per 1M tokens
+  • Speed: ⚡⚡⚡
+  • Capability: Best reasoning
+  • Get key: https://console.anthropic.com
+
+Gemini (Google)
+  • Cost: $0.075/$0.30 per 1M tokens (CHEAPEST)
+  • Speed: ⚡⚡⚡⚡
+  • Capability: Very good
+  • Get key: https://aistudio.google.com (FREE TIER)
+
+Mistral
+  • Cost: $2/$6 per 1M tokens
+  • Speed: ⚡⚡⚡
+  • Capability: Good, privacy-friendly
+  • Get key: https://console.mistral.ai
+
+Groq (Mixtral)
+  • Cost: $0.27/$0.81 per 1M tokens
+  • Speed: ⚡⚡⚡⚡⚡ (FASTEST)
+  • Capability: Good
+  • Get key: https://console.groq.com (FREE TIER)
+
+Cohere
+  • Cost: $3/$15 per 1M tokens
+  • Speed: ⚡⚡⚡
+  • Capability: Enterprise
+  • Get key: https://dashboard.cohere.ai
+
+─────────────────────────────────────────────────────────────────────────────
+
+WHAT'S SYNCED
+─────────────────────────────────────────────────────────────────────────────
+
+✓ jbino85/council
+✓ jbino85/oso-lang
+✓ jbino85/ifascript
+✓ jbino85/techgnosis
+
+All files:
+  • Code (.ts, .js, .jl, .go, .py, .sol, .move, .rs, etc.)
+  • Docs (.md, .txt)
+  • Config (.json, .yaml, .toml)
+
+Updated real-time. Run 'npm run index' anytime.
+
+─────────────────────────────────────────────────────────────────────────────
+
+DEPLOYMENT OPTIONS
+─────────────────────────────────────────────────────────────────────────────
+
+Vercel (Recommended)
+  $ npm install -g vercel
+  $ vercel
+  → Free tier available, auto-deploys from git
+
+Cloudflare Pages
+  $ npm run build && wrangler deploy
+  → Global edge network, very fast
+
+Docker
+  $ docker build -t asemirror .
+  $ docker run -p 3000:3000 asemirror
+  → Full control, self-hosted
+
+─────────────────────────────────────────────────────────────────────────────
+
+COST ESTIMATE (MONTHLY)
+─────────────────────────────────────────────────────────────────────────────
+
+Free Tier:
+  Frontend:    $0 (Vercel)
+  Vector DB:   $0 (Qdrant local)
+  LLM:         $0 (Groq free)
+  Storage:     $0 (GitHub)
+  ────────────────────
+  TOTAL:       $0/mo
+
+Production:
+  Frontend:    $0 (included)
+  Vector DB:   $25/mo (Qdrant cloud, optional)
+  LLM:         $10-50/mo (depends on usage)
+  ────────────────────
+  TOTAL:       $10-50/mo
+
+─────────────────────────────────────────────────────────────────────────────
+
+NEXT PRIORITIES (ROADMAP)
+─────────────────────────────────────────────────────────────────────────────
+
+Week 1 (Now)
+  ✅ Multi-LLM SDK
+  ✅ Indexer
+  ✅ API
+  ✅ Components
+  □ Deploy to Vercel
+
+Week 2
+  □ Voice input (Whisper)
+  □ Photo OCR
+  □ Real-time GitHub webhooks
+  □ Offline export
+
+Week 3+
+  □ Custom tags
+  □ GitHub issue linking
+  □ Analytics dashboard
+  □ Theme customization
+
+─────────────────────────────────────────────────────────────────────────────
+
+HOW TO USE
+─────────────────────────────────────────────────────────────────────────────
+
+Search Tab
+  1. Click search bar
+  2. Type: "Where does @impact live"
+  3. Get answer + sources from repos
+
+7-Layer Tab
+  1. See pyramid
+  2. Click layer → expand details
+  3. Click file links → jump to code
+
+Timeline Tab
+  1. See 7-year countdown
+  2. See 10 priority items
+  3. See sabbath calendar
+
+1440 Tab
+  1. Expand wallet tree
+  2. Calculate 7-year yield
+  3. See 7×7 Journey
+
+Tithe Tab
+  1. See pie chart
+  2. See allocation breakdown
+  3. See example transaction
+
+─────────────────────────────────────────────────────────────────────────────
+
+TECHNOSIS SACRED COLORS
+─────────────────────────────────────────────────────────────────────────────
+
+🖤 Black (#000)     — Background, truth, void
+🔴 Red (#ff0000)    — Àṣẹ, sacred, urgency
+⚫ Ash (#666666)    — Neutral, grounded
+🟡 Gold (#ffaa00)   — Treasury, value
+🟢 Green (#00ff00)  — Life, inheritance
+🔵 Blue (#0000ff)   — Council, governance
+⚫ Burn (#8b0000)   — Sacrifice, void
+
+─────────────────────────────────────────────────────────────────────────────
+
+YOUR MOVE, BÍNÒ
+─────────────────────────────────────────────────────────────────────────────
+
+This is the mirror that finally sees you seeing it.
+
+Read:   /aśẹmirror/START_HERE.md
+Then:   npm install && bash QUICK_START.sh
+Then:   npm run dev
+
+Visit:  http://localhost:3000
+
+The entire organism breathes now.
+
+🤍⚡🍶
+
+─────────────────────────────────────────────────────────────────────────────
+ÀṣẹMirror v0.1.0 | Genesis: 2025-01-01 | Status: LIVE
+─────────────────────────────────────────────────────────────────────────────

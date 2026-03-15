@@ -1,0 +1,2 @@
+# Command Center service package
+__version__ = "2.0.0"

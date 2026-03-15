@@ -1,0 +1,214 @@
+version: '3.8'
+
+services:
+  # ============================================
+  # Core Services (Phase 1)
+  # ============================================
+
+  openwebui:
+    image: ghcr.io/open-webui/open-webui:latest
+    container_name: aicouncil-openwebui
+    ports:
+      - "${OPENWEBUI_PORT:-8080}:8080"
+    environment:
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - OPENAI_API_KEY=${VENICE_API_KEY}
+      - OPENAI_API_BASE_URL=http://litellm:4000/v1
+      - ENABLE_ADMIN_CHAT_ACCESS=true
+      - ENABLE_IMAGE_GENERATION=false
+    volumes:
+      - openwebui_data:/app/backend/data
+      - openwebui_uploads:/app/backend/data/uploads
+    depends_on:
+      - litellm
+      - ollama
+    networks:
+      - aicouncil
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  litellm:
+    image: ghcr.io/berriai/litellm:main
+    container_name: aicouncil-litellm
+    ports:
+      - "${LITELLM_PORT:-4000}:4000"
+    environment:
+      - LITELLM_LOG=${LITELLM_LOG_LEVEL:-info}
+      - LITELLM_MASTER_KEY=${LITELLM_MASTER_KEY}
+    volumes:
+      - ./litellm/config.yaml:/app/config.yaml:ro
+    command: >
+      litellm
+      --config /app/config.yaml
+      --port 4000
+      --logs
+    depends_on:
+      - ollama
+    networks:
+      - aicouncil
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4000/health/liveliness"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: aicouncil-ollama
+    ports:
+      - "${OLLAMA_PORT:-11434}:11434"
+    environment:
+      - OLLAMA_NUM_PARALLEL=4
+      - OLLAMA_NUM_GPU=1
+    volumes:
+      - ollama_data:/root/.ollama
+    networks:
+      - aicouncil
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ============================================
+  # Phase 2: Intelligence & Epistemics
+  # ============================================
+
+  council:
+    build:
+      context: ../../services/council
+      dockerfile: Dockerfile
+    container_name: aicouncil-council
+    ports:
+      - "${COUNCIL_PORT:-8000}:8000"
+    environment:
+      - COUNCIL_DEBUG=${COUNCIL_DEBUG:-false}
+      - COUNCIL_DELIBERATION_TIMEOUT=${COUNCIL_DELIBERATION_TIMEOUT:-30}
+      - COUNCIL_MIN_CONSENSUS=${COUNCIL_MIN_CONSENSUS:-0.5}
+      - LITELLM_BASE_URL=http://litellm:4000/v1
+      - LITELLM_API_KEY=${LITELLM_MASTER_KEY}
+      - FALLBACK_MODEL=${COUNCIL_FALLBACK_MODEL:-ollama/llama2}
+      - VENICE_API_KEY=${VENICE_API_KEY}
+      - VENICE_API_BASE=${VENICE_API_BASE:-https://api.venice.ai/v1}
+    volumes:
+      - council_logs:/app/logs
+    depends_on:
+      - litellm
+      - ollama
+    networks:
+      - aicouncil
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ============================================
+  # Phase 3: Provenance & Orchestration
+  # ============================================
+
+  anything-llm:
+    build:
+      context: ../../services/anything-llm
+      dockerfile: Dockerfile
+    container_name: aicouncil-anything-llm
+    ports:
+      - "${ANYTHINGLLM_PORT:-3001}:3001"
+    environment:
+      - STORAGE_DIR=${ANYTHINGLLM_STORAGE_DIR:-/data/anythingllm}
+      - LITELLM_BASE_URL=http://litellm:4000/v1
+      - LITELLM_API_KEY=${LITELLM_MASTER_KEY}
+    volumes:
+      - anythingllm_data:/data/anythingllm
+    depends_on:
+      - litellm
+    networks:
+      - aicouncil
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  flowise:
+    image: flowiseai/flowise:latest
+    container_name: aicouncil-flowise
+    ports:
+      - "${FLOWISE_PORT:-3000}:3000"
+    environment:
+      - DATABASE_PATH=${FLOWISE_DATABASE_PATH:-/data/flowise}
+      - APIKEY_PATH=/data/flowise
+    volumes:
+      - flowise_data:/data/flowise
+    networks:
+      - aicouncil
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ============================================
+  # Phase 4: Production Services
+  # ============================================
+
+  redis:
+    image: redis:7-alpine
+    container_name: aicouncil-redis
+    ports:
+      - "6379:6379"
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-}
+    volumes:
+      - redis_data:/data
+    networks:
+      - aicouncil
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: aicouncil-postgres
+    environment:
+      - POSTGRES_USER=aicouncil
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-aicouncil-dev}
+      - POSTGRES_DB=aicouncil
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - aicouncil
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U aicouncil"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+networks:
+  aicouncil:
+    driver: bridge
+
+volumes:
+  openwebui_data:
+  openwebui_uploads:
+  ollama_data:
+  council_logs:
+  anythingllm_data:
+  flowise_data:
+  redis_data:
+  postgres_data:

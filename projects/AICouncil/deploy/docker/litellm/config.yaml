@@ -1,0 +1,88 @@
+# LiteLLM Configuration for AICouncil
+# Proxy all requests with Venice as primary, fallback to Ollama local models
+
+model_list:
+  # ============================================
+  # Venice API (Primary) - Phase 3
+  # ============================================
+  - model_name: gpt-4
+    litellm_params:
+      model: openai/gpt-4
+      api_key: !ENV VENICE_API_KEY
+      api_base: !ENV [VENICE_API_BASE, "https://api.venice.ai/v1"]
+    model_info:
+      supports_function_calling: true
+      supports_vision: true
+
+  - model_name: gpt-3.5-turbo
+    litellm_params:
+      model: openai/gpt-3.5-turbo
+      api_key: !ENV VENICE_API_KEY
+      api_base: !ENV [VENICE_API_BASE, "https://api.venice.ai/v1"]
+    model_info:
+      supports_function_calling: true
+
+  - model_name: llama-405b
+    litellm_params:
+      model: openai/llama-405b
+      api_key: !ENV VENICE_API_KEY
+      api_base: !ENV [VENICE_API_BASE, "https://api.venice.ai/v1"]
+    model_info:
+      supports_function_calling: false
+
+  # ============================================
+  # Ollama Local Models (Fallback)
+  # ============================================
+  - model_name: ollama/llama2
+    litellm_params:
+      model: ollama/llama2
+      api_base: http://ollama:11434
+    model_info:
+      supports_function_calling: false
+
+  - model_name: ollama/mistral
+    litellm_params:
+      model: ollama/mistral
+      api_base: http://ollama:11434
+    model_info:
+      supports_function_calling: false
+
+  - model_name: ollama/neural-chat
+    litellm_params:
+      model: ollama/neural-chat
+      api_base: http://ollama:11434
+    model_info:
+      supports_function_calling: false
+
+# ============================================
+# Fallback Logic
+# ============================================
+fallback_models:
+  # If Venice is down, fallback to Ollama
+  - gpt-4: [ollama/llama2]
+  - gpt-3.5-turbo: [ollama/mistral]
+  - llama-405b: [ollama/llama2]
+
+# ============================================
+# Router Settings
+# ============================================
+router_settings:
+  max_retries: 2
+  timeout: 60
+  redis_host: !ENV [REDIS_URL, "redis"]
+  redis_port: 6379
+
+# ============================================
+# Logging & Monitoring
+# ============================================
+logging:
+  console: true
+  level: !ENV [LITELLM_LOG, "info"]
+
+# ============================================
+# Rate Limiting (Phase 4)
+# ============================================
+rate_limiting:
+  enabled: true
+  max_requests: 100
+  time_window: 3600

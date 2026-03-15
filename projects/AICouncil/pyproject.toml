@@ -1,0 +1,94 @@
+[build-system]
+requires = ["setuptools>=65.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aicouncil"
+version = "0.1.0"
+description = "Distributed epistemic consensus engine powered by Venice AI"
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+authors = [{name = "AIcouncil Contributors"}]
+keywords = ["ai", "consensus", "council", "venice", "ollama", "blockchain"]
+
+dependencies = [
+    "fastapi>=0.104.0",
+    "uvicorn>=0.24.0",
+    "litellm>=1.3.0",
+    "python-dotenv>=1.0.0",
+    "pydantic>=2.4.0",
+    "httpx>=0.25.0",
+    "redis>=5.0.0",
+    "sqlalchemy>=2.0.0",
+    "alembic>=1.12.0",
+    "pydantic-settings>=2.0.0",
+    "tenacity>=8.2.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "pytest-asyncio>=0.21.0",
+    "black>=23.10.0",
+    "flake8>=6.1.0",
+    "mypy>=1.6.0",
+    "isort>=5.12.0",
+]
+
+rag = [
+    "chromadb>=0.4.0",
+    "langchain>=0.1.0",
+    "pdfplumber>=0.10.0",
+]
+
+blockchain = [
+    "sui-client>=0.1.0",
+    "arweave>=0.5.0",
+    "bundlr-client>=0.1.0",
+]
+
+supabase = [
+    "supabase>=2.0.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["services", "middleware"]
+
+[tool.black]
+line-length = 100
+target-version = ['py311']
+include = '\.pyi?$'
+
+[tool.isort]
+profile = "black"
+line_length = 100
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+check_untyped_defs = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests", "services", "middleware"]
+python_files = ["test_*.py", "*_test.py"]
+asyncio_mode = "auto"
+addopts = "--strict-markers --tb=short"
+
+[tool.coverage.run]
+source = ["services", "middleware"]
+omit = ["*/tests/*", "*/test_*.py"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+]

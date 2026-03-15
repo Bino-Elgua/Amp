@@ -1,0 +1,124 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-black text-white;
+  }
+
+  h1 {
+    @apply text-4xl font-bold;
+  }
+
+  h2 {
+    @apply text-2xl font-bold;
+  }
+
+  h3 {
+    @apply text-xl font-bold;
+  }
+
+  button {
+    @apply transition-all duration-200;
+  }
+
+  input,
+  textarea {
+    @apply focus:outline-none focus:ring-2;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-red-700 hover:bg-red-600 text-white px-4 py-2 rounded font-bold transition-colors;
+  }
+
+  .btn-secondary {
+    @apply bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded font-bold transition-colors;
+  }
+
+  .card {
+    @apply bg-gray-950 border border-gray-800 rounded-lg p-6;
+  }
+
+  .card-hover {
+    @apply card hover:border-red-700 hover:bg-gray-900 cursor-pointer transition-all;
+  }
+
+  .badge {
+    @apply inline-block px-2 py-1 rounded text-xs font-bold;
+  }
+
+  .badge-red {
+    @apply badge bg-red-900 text-red-200;
+  }
+
+  .badge-green {
+    @apply badge bg-green-900 text-green-200;
+  }
+
+  .badge-blue {
+    @apply badge bg-blue-900 text-blue-200;
+  }
+
+  .text-gradient {
+    background: linear-gradient(135deg, #ff0000, #ffaa00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1f2937;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4b5563;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.animate-slide-in {
+  animation: slideIn 0.3s ease-in-out;
+}

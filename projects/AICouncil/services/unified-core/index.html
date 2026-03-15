@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AICouncil - Unified System</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 900px;
+            width: 100%;
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        .header h1 { font-size: 2.5em; margin-bottom: 10px; }
+        .header p { font-size: 1.1em; opacity: 0.9; }
+        .content {
+            padding: 40px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .card {
+            border: 2px solid #f0f0f0;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .card:hover {
+            border-color: #667eea;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+            transform: translateY(-5px);
+        }
+        .card-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+        .card h3 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .card p {
+            color: #666;
+            font-size: 0.95em;
+            margin-bottom: 15px;
+        }
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            font-size: 0.95em;
+            transition: opacity 0.3s;
+        }
+        .btn:hover { opacity: 0.9; }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 12px;
+            margin-top: 30px;
+        }
+        .stat {
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+        .stat-label {
+            color: #666;
+            font-size: 0.9em;
+        }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #999;
+            font-size: 0.9em;
+            border-top: 1px solid #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚡ AICouncil</h1>
+            <p>Unified Consensus Engine + Admin Control</p>
+        </div>
+        
+        <div class="content">
+            <div class="grid">
+                <div class="card" onclick="window.location.href='/chat'">
+                    <div class="card-icon">💬</div>
+                    <h3>Chat Interface</h3>
+                    <p>Ask questions and engage in council deliberations</p>
+                    <a href="/chat" class="btn">Open Chat</a>
+                </div>
+                
+                <div class="card" onclick="window.location.href='/admin'">
+                    <div class="card-icon">⚙️</div>
+                    <h3>Admin Dashboard</h3>
+                    <p>Monitor councils, analytics, and system health</p>
+                    <a href="/admin" class="btn">Open Admin</a>
+                </div>
+                
+                <div class="card" onclick="fetch('/api/health').then(r => r.json()).then(d => alert(JSON.stringify(d, null, 2)))">
+                    <div class="card-icon">🏥</div>
+                    <h3>System Health</h3>
+                    <p>Check API status and service health</p>
+                    <button class="btn">Check Health</button>
+                </div>
+            </div>
+            
+            <div class="stats" id="stats">
+                <div class="stat">
+                    <div class="stat-value" id="sessions">0</div>
+                    <div class="stat-label">Active Sessions</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value" id="consensus">0.72</div>
+                    <div class="stat-label">Avg Consensus</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value" id="users">42</div>
+                    <div class="stat-label">Active Users</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value" id="uptime">12h</div>
+                    <div class="stat-label">System Uptime</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>🚀 Version 3.0.0 - Unified Council + Command Center</p>
+            <p><a href="/api/docs" style="color: #667eea; text-decoration: none;">📚 API Documentation</a></p>
+        </div>
+    </div>
+    
+    <script>
+        // Load stats from API
+        async function loadStats() {
+            try {
+                const response = await fetch('/api/dashboard/overview');
+                const data = await response.json();
+                document.getElementById('sessions').textContent = data.council.active_sessions;
+                document.getElementById('consensus').textContent = data.council.avg_consensus;
+                document.getElementById('users').textContent = data.analytics.user_count;
+            } catch (error) {
+                console.error('Failed to load stats:', error);
+            }
+        }
+        
+        // Auto-refresh stats every 10 seconds
+        loadStats();
+        setInterval(loadStats, 10000);
+    </script>
+</body>
+</html>

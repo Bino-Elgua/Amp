@@ -1,0 +1,93 @@
+version: '3.8'
+
+services:
+  # Qdrant Vector Database
+  qdrant:
+    image: qdrant/qdrant:latest
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    environment:
+      QDRANT_API_KEY: ${QDRANT_API_KEY:-dev-key}
+    volumes:
+      - qdrant_storage:/qdrant/storage
+    networks:
+      - cassandra-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6333/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - cassandra-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Ollama (Local LLM)
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    environment:
+      - OLLAMA_MODELS=/data/ollama/models
+    volumes:
+      - ollama_data:/data/ollama
+    networks:
+      - cassandra-network
+    # Run: ollama pull deepseek-v3 nomic-embed-text
+
+  # Cassandra Oracle API
+  cassandra-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "4000:4000"
+    environment:
+      - QDRANT_URL=http://qdrant:6333
+      - REDIS_URL=redis://redis:6379
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - ORACLE_MODE=production
+      - ORACLE_LOG_PATH=/cassandra/logs
+      - ORACLE_MEMORY_PATH=/cassandra/data/oracle-memory.json
+    volumes:
+      - ./data:/cassandra/data
+      - ./logs:/cassandra/logs
+      - ./shadow-branches:/cassandra/shadow-branches
+    depends_on:
+      qdrant:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - cassandra-network
+    command: npm start
+
+  # Monitoring Dashboard
+  dashboard:
+    image: node:20-alpine
+    working_dir: /app
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./dashboard:/app
+    networks:
+      - cassandra-network
+    command: npm run dev
+
+networks:
+  cassandra-network:
+    driver: bridge
+
+volumes:
+  qdrant_storage:
+  ollama_data:

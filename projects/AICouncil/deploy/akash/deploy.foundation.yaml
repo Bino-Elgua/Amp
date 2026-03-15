@@ -1,0 +1,120 @@
+---
+version: "2.0"
+
+services:
+  openwebui:
+    image: ghcr.io/open-webui/open-webui:latest
+    expose:
+      - port: 8080
+        as: 8080
+        to:
+          - service: openwebui
+    env:
+      - "OLLAMA_BASE_URL=http://ollama:11434"
+      - "OPENAI_API_BASE_URL=http://litellm:4000/v1"
+      - "ENABLE_ADMIN_CHAT_ACCESS=true"
+    resources:
+      cpu:
+        units: 1
+      memory:
+        size: 2Gi
+      storage:
+        - size: 5Gi
+
+  litellm:
+    image: ghcr.io/berriai/litellm:main
+    expose:
+      - port: 4000
+        as: 4000
+        to:
+          - service: litellm
+    env:
+      - "LITELLM_LOG=info"
+    resources:
+      cpu:
+        units: 1
+      memory:
+        size: 2Gi
+      storage:
+        - size: 2Gi
+
+  ollama:
+    image: ollama/ollama:latest
+    expose:
+      - port: 11434
+        as: 11434
+        to:
+          - service: ollama
+    env:
+      - "OLLAMA_NUM_PARALLEL=2"
+    resources:
+      cpu:
+        units: 2
+      memory:
+        size: 4Gi
+      storage:
+        - size: 20Gi
+      gpu:
+        units: 1
+        attributes:
+          vendor:
+            nvidia:
+              - model: a40
+              - model: a100
+              - model: rtx6000
+
+  council:
+    image: aicouncil/council:latest
+    expose:
+      - port: 8000
+        as: 8000
+        to:
+          - service: council
+    env:
+      - "COUNCIL_DEBUG=false"
+      - "LITELLM_BASE_URL=http://litellm:4000/v1"
+      - "FALLBACK_MODEL=ollama/llama2"
+    resources:
+      cpu:
+        units: 1
+      memory:
+        size: 1Gi
+      storage:
+        - size: 1Gi
+
+profiles:
+  compute:
+    resources:
+      - name: openwebui
+        requirements:
+          kube: {}
+      - name: litellm
+        requirements:
+          kube: {}
+      - name: ollama
+        requirements:
+          kube: {}
+          storage:
+            - name: ephemeral
+              size: 20Gi
+      - name: council
+        requirements:
+          kube: {}
+
+  placement:
+    akash:
+      attributes:
+        region: us-west
+      pricing:
+        openwebui:
+          denom: uakt
+          amount: "10000"
+        litellm:
+          denom: uakt
+          amount: "10000"
+        ollama:
+          denom: uakt
+          amount: "50000"
+        council:
+          denom: uakt
+          amount: "5000"

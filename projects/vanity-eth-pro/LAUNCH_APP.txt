@@ -1,0 +1,140 @@
+╔═══════════════════════════════════════════════════════════════════════════╗
+║                                                                           ║
+║                   🔮 ÀṣẹMIRROR — APP MODE (READY)                        ║
+║                                                                           ║
+║                    Zero Config. One Command Launch.                      ║
+║                                                                           ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+
+🚀 LAUNCH NOW
+
+$ cd /data/data/com.termux/files/home/aśẹmirror
+$ bash RUN.sh
+
+Then:
+1. App opens on http://localhost:1111
+2. Settings modal appears
+3. Choose your LLM provider
+4. Paste your API key
+5. Click "Save Settings"
+6. Done ✅
+
+─────────────────────────────────────────────────────────────────────────────
+
+⚙️ CONFIGURATION (IN THE APP)
+
+When you launch, you'll see a modal asking for:
+
+✓ LLM Provider (dropdown)
+  - OpenAI (GPT-4o)
+  - Claude (Anthropic)
+  - Gemini (Google) - FREE
+  - Mistral
+  - Groq - FREE
+  - Cohere
+
+✓ API Key (get from provider's dashboard)
+
+✓ Qdrant URL (defaults to localhost:6333)
+
+✓ GitHub Repos (already set)
+
+✓ Phone Key (optional)
+
+─────────────────────────────────────────────────────────────────────────────
+
+🧠 GET YOUR API KEY (PICK ONE)
+
+OpenAI:
+  1. Visit https://platform.openai.com/api-keys
+  2. Create key
+  3. Paste in settings
+
+Claude:
+  1. Visit https://console.anthropic.com
+  2. Create key
+  3. Paste in settings
+
+Gemini (FREE TIER):
+  1. Visit https://aistudio.google.com
+  2. Create key
+  3. Paste in settings
+
+Groq (FREE TIER):
+  1. Visit https://console.groq.com
+  2. Create key
+  3. Paste in settings
+
+Mistral:
+  1. Visit https://console.mistral.ai
+  2. Create key
+  3. Paste in settings
+
+Cohere:
+  1. Visit https://dashboard.cohere.ai
+  2. Create key
+  3. Paste in settings
+
+─────────────────────────────────────────────────────────────────────────────
+
+📱 WHAT'S READY
+
+✅ Settings modal (configure in app)
+✅ Settings storage (browser localStorage)
+✅ All 5 tabs (search, pyramid, timeline, wallets, tithe)
+✅ Dark mode UI (phone-friendly)
+✅ Zero .env setup
+✅ One-click configuration
+
+─────────────────────────────────────────────────────────────────────────────
+
+🎯 WORKFLOW
+
+FIRST TIME:
+  1. bash RUN.sh
+  2. Fill settings modal
+  3. Click "Save Settings"
+  4. Use app normally
+
+FUTURE TIMES:
+  1. bash RUN.sh
+  2. Settings loaded automatically
+  3. Use app normally
+  4. Click ⚙️ (bottom right) to change settings
+
+─────────────────────────────────────────────────────────────────────────────
+
+✨ KEY FEATURES
+
+✓ No .env file editing
+✓ Settings in app
+✓ Change LLM provider anytime
+✓ Instant save (no restart needed)
+✓ Works on any machine (settings in browser)
+✓ Mobile app support (PWA)
+✓ Offline capable
+
+─────────────────────────────────────────────────────────────────────────────
+
+📚 FULL GUIDE
+
+Read: /aśẹmirror/APP_MODE.md
+
+Or just launch:
+  bash RUN.sh
+
+─────────────────────────────────────────────────────────────────────────────
+
+🤍⚡🍶
+
+Everything is configured.
+
+One command launches the app.
+
+Configuration happens in the settings modal.
+
+Your move, Bínò.
+
+$ bash RUN.sh
+
+─────────────────────────────────────────────────────────────────────────────
