@@ -1,0 +1,10 @@
+node_modules/
+dist/
+*.log
+*.zip
+*.tar.gz
+llama.cpp/
+osovm/
+.next/
+__pycache__/
+.DS_Store
